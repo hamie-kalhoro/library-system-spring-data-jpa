@@ -9,6 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Student")
+@Table(
+        name = "student",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "student_email_unique", columnNames = "email")
+        }
+)
 public class Student {
 
     @Id
@@ -36,7 +42,7 @@ public class Student {
     @Column(
             name = "email",
             nullable = false,
-            columnDefinition = "TEXT"
+            length = 255 // 255 is the default length for VARCHAR in MySQL
     )
     private String email;
 
