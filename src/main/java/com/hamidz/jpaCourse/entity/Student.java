@@ -1,11 +1,16 @@
-package com.hamidz.jpaCourse;
+package com.hamidz.jpaCourse.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Data
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "Student")
 @Table(
         name = "student",
@@ -24,33 +29,19 @@ public class Student {
     private Long id;
 
     @Column(
-            name = "first_name",
+            name = "student_name",
             nullable = false,
             columnDefinition = "TEXT"
     )
-    private String firstName;
-
-    @Column(
-            name = "last_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String lastName;
+    private String studentName;
 
     @Column(
             name = "email",
-            nullable = false,
             length = 255 // 255 is the default length for VARCHAR in MySQL
     )
     private String email;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate enrollmentDate;
 
-    @Column(name = "age")
-    private Integer age;
 
-    public Student(String firstName, String lastName, String email, Integer age) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.age = age;
-    }
 }
