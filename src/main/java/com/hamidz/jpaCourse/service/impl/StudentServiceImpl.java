@@ -3,6 +3,7 @@ package com.hamidz.jpaCourse.service.impl;
 import com.hamidz.jpaCourse.entity.Student;
 import com.hamidz.jpaCourse.repository.StudentRepository;
 import com.hamidz.jpaCourse.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -37,19 +38,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(Long studentId) {
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
-        if(student != null) {
-            studentRepository.delete(student);
+        if(!studentRepository.existsById(studentId)) {
+            throw new EntityNotFoundException("Student not found with id: " + studentId);
         }
+        studentRepository.deleteById(studentId);
     }
-
-    @Override
-    public void updateStudent(Long studentId, String firstName, String lastName, String email) {
-
-    }
-
-
 
     @Override
     public Student getStudentByEmail(String email) {
