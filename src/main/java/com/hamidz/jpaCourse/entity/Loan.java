@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long loanId;
     @Column(name = "loan_date") @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate loanDate;
     @Column(name = "return_date") @JsonFormat(pattern = "yyyy-MM-dd")

@@ -27,7 +27,7 @@ public class Student {
             name = "student_id",
             updatable = false
     )
-    private Long id;
+    private Long studentId;
 
     @Column(
             name = "student_name",

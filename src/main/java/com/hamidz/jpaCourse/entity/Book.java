@@ -18,7 +18,7 @@ public class Book {
             name = "book_id",
             updatable = false
     )
-    private Long id;
+    private Long bookId;
     @Column(
             name = "book_title",
             nullable = false,
