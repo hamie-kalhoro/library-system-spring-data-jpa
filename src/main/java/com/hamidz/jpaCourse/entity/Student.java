@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Getter
@@ -43,5 +44,6 @@ public class Student {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate enrollmentDate;
 
-
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Loan> loans;
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 @Entity @Table(name = "books")
@@ -32,4 +33,6 @@ public class Book {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishedDate;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Loan> loans;
 }
