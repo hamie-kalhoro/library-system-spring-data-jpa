@@ -3,16 +3,16 @@ package com.hamidz.jpaCourse.service.impl;
 import com.hamidz.jpaCourse.entity.Book;
 import com.hamidz.jpaCourse.repository.BookRepository;
 import com.hamidz.jpaCourse.service.BookService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    BookRepository bookRepository;
-    public BookServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+    private final BookRepository bookRepository;
 
     @Override
     public Book saveBook(Book book) {
@@ -37,8 +37,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long bookId) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException("Book not found"));
-        bookRepository.delete(book);
+        if(!bookRepository.existsById(bookId)) {
+            throw new EntityNotFoundException("Book not found with id: "+bookId);
+        }
+        bookRepository.deleteById(bookId);
     }
 }

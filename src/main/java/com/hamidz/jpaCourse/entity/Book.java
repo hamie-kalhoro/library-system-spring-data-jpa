@@ -1,5 +1,6 @@
 package com.hamidz.jpaCourse.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class Book {
             length = 13 // 13 is the standard length for ISBN-13
     )
     private String isbn;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishedDate;
 
 }

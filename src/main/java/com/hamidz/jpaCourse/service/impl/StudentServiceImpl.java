@@ -4,16 +4,15 @@ import com.hamidz.jpaCourse.entity.Student;
 import com.hamidz.jpaCourse.repository.StudentRepository;
 import com.hamidz.jpaCourse.service.StudentService;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
-    StudentRepository studentRepository;
-    public StudentServiceImpl(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    private final StudentRepository studentRepository;
 
     @Override
     public Student saveStudent(Student student) {

@@ -2,19 +2,17 @@ package com.hamidz.jpaCourse.controller;
 
 import com.hamidz.jpaCourse.entity.Student;
 import com.hamidz.jpaCourse.service.StudentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(path = "/students")
+@RestController @RequestMapping(path = "/students")
+@RequiredArgsConstructor
 public class StudentController {
 
-    private StudentService studentService;
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+    private final StudentService studentService;
 
     @PostMapping("/create-student")
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
