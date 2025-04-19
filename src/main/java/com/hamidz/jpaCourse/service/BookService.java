@@ -15,6 +15,4 @@ public interface BookService {
     Book getBookByTitle(String title);
 
     void deleteBook(Long bookId);
-
-    void updateBook(Long bookId, String title, String isbn);
 }

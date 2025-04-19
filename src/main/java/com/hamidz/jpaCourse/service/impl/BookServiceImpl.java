@@ -1,44 +1,44 @@
 package com.hamidz.jpaCourse.service.impl;
 
 import com.hamidz.jpaCourse.entity.Book;
-import com.hamidz.jpaCourse.entity.Student;
 import com.hamidz.jpaCourse.repository.BookRepository;
 import com.hamidz.jpaCourse.service.BookService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
 
+    BookRepository bookRepository;
+    public BookServiceImpl(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
     @Override
     public Book saveBook(Book book) {
-        return null;
+        return bookRepository.save(book);
     }
 
     @Override
     public List<Book> getAllBooks() {
-        return null;
+        return bookRepository.findAll();
     }
 
     @Override
     public Book getBookById(Long bookId) {
-        return null;
+        return bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
     @Override
     public Book getBookByTitle(String title) {
-        return null;
+        return bookRepository.findByTitle(title);
     }
 
     @Override
     public void deleteBook(Long bookId) {
-
-    }
-
-    @Override
-    public void updateBook(Long bookId, String title, String isbn) {
-
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        bookRepository.delete(book);
     }
 }
