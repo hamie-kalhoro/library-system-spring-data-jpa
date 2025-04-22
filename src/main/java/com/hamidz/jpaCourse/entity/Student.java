@@ -44,6 +44,6 @@ public class Student {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate enrollmentDate;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Loan> loans;
 }
