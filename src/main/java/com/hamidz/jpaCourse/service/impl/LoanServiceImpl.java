@@ -7,11 +7,13 @@ import com.hamidz.jpaCourse.repository.BookRepository;
 import com.hamidz.jpaCourse.repository.LoanRepository;
 import com.hamidz.jpaCourse.repository.StudentRepository;
 import com.hamidz.jpaCourse.service.LoanService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +24,14 @@ public class LoanServiceImpl implements LoanService {
     private final BookRepository bookRepository;
 
     @Override
-    public Loan assignBookToStudent(Long bookId, Long studentId, LocalDate loanDate, LocalDate returnDate) {
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found with id: "+bookId));
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+    public Loan assignBookToStudent( Long bookId,
+                                     Long studentId,
+                                     LocalDate loanDate,
+                                     LocalDate returnDate) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found with id: "+bookId));
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
         Loan loan = new Loan();
         loan.setBook(book);
         loan.setStudent(student);
@@ -37,47 +44,65 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public Loan returnBook(Long loanId, LocalDate returnDate) {
-        return null;
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Loan not found with id: " + loanId));
+        loan.setReturnDate(returnDate);
+        return loanRepository.save(loan);
     }
 
     @Override
     public Loan getLoanById(Long loanId) {
-        return null;
+        return loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Loan not found with id: " + loanId));
     }
 
     @Override
     public List<Loan> getAllLoans() {
-        return null;
+        return loanRepository.findAll();
     }
 
     @Override
     public List<Loan> getLoansByStudentId(Long studentId) {
-        return null;
+        if(!studentRepository.existsById(studentId)) {
+            throw new EntityNotFoundException("Student not found with id: " + studentId);
+        }
+        return loanRepository.findByStudentId(studentId);
     }
 
     @Override
     public List<Loan> getLoansByBookId(Long bookId) {
-        return null;
+        if(!loanRepository.existsById(bookId)) {
+            throw new EntityNotFoundException("Student not found with id: " + bookId);
+        }
+        return loanRepository.findByBookId(bookId);
     }
 
     @Override
     public List<Loan> getActiveLoansByStudentId(Long studentId) {
-        return null;
+        return loanRepository.findByStudentId(studentId).stream()
+                .filter(loan -> loan.getReturnDate().isAfter(LocalDate.now()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean isBookLoaned(Long bookId) {
-        return false;
+        return loanRepository.findByBookId(bookId).stream()
+                .anyMatch(loan -> loan.getReturnDate().isAfter(LocalDate.now()));
     }
 
     @Override
     public void deleteLoan(Long loanId) {
-
+        if(!loanRepository.existsById(loanId)) {
+            throw new EntityNotFoundException("Loan not found with id: " + loanId);
+        }
+        loanRepository.deleteById(loanId);
     }
 
     @Override
-    public boolean hasOverdueBooks(Long studentId) {
-        return false;
+    public List<Loan> hasOverdueBooks(Long studentId) {
+        return loanRepository.findByStudentId(studentId).stream()
+                .filter(loan -> loan.getReturnDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList());
     }
 
     @Override

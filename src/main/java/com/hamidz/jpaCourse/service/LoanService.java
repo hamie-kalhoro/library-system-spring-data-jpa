@@ -24,7 +24,7 @@ public interface LoanService {
 
     void deleteLoan(Long loanId);
 
-    boolean hasOverdueBooks(Long studentId);
+    List<Loan> hasOverdueBooks(Long studentId);
 
     List<Loan> getOverdueLoans(Long loanId);
 
